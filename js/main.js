@@ -1,14 +1,5 @@
 var calculateSeed = function(z11seed) {
-	var period = bigInt(4294967296);
-	var seed = bigInt(z11seed, 10).minus(6);
-	while(bigInt(0).greater(seed)) {
-		seed = seed.add(period);
-	}
-	seed = seed.times(492935547).mod(period);
-	if(seed.greaterOrEquals(2147483648)) {
-		seed =  seed.minus(period);
-	}
-	return seed.value;
+	return bigInt(z11seed, 10).plus(0x40005e47).times(0xd6ee52a).mod(0x7fffffff).mod(0x713cee3f);
 };
 
 var formatTime = function(ms) {
@@ -47,6 +38,7 @@ var getZoneForChar = function(songs, char1, type, infos) {
 		case '7': //coda
 		case '8': //bolt
 		case '9': //bard
+		case '10': //nocturna
 			var zone = numType < 5 ? numType : Math.floor((songs-1)/4) + 1,
 				floor = ((songs-1) % 4) + 1;
 			if(char1 === '2' && numType >= 5) zone = 5 - zone;
@@ -81,6 +73,7 @@ var getCharName = function(n) {
 		case '7': return 'coda';
 		case '8': return 'bolt';
 		case '9': return 'bard';
+		case '10': return 'nocturna';
 	}
 }
 var getTypeName = function(n) {
@@ -93,7 +86,7 @@ var getTypeName = function(n) {
 		case '6': return 'All-Zones';
 		case '7': return 'Daily';
 		case '8': return 'Seeded All-Zones';
-		default: return 'Unknown'
+		default: return 'Unknown';
 	}
 }
 
